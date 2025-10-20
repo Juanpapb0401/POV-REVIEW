@@ -1,5 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, UpdateDateColumn, CreateDateColumn } from "typeorm";
-
+import { Entity, PrimaryGeneratedColumn, Column, UpdateDateColumn, CreateDateColumn, Unique, BeforeUpdate, BeforeInsert } from "typeorm";
+import { IsEmail } from "class-validator";
 
 export enum UserRole {
     ADMIN = 'admin',
@@ -15,11 +15,17 @@ export class User {
     @Column()
     name: string;
 
-    @Column()
+    @Column({
+        unique: true,
+        type: 'text'
+    })
+    @IsEmail()
     email: string;
 
-    @Column()
-    password: string;
+    @Column({
+        type: 'text'
+    })
+    password: string; // en el  repo del profe es opcional, pero no puede ser
 
     @Column({ type: 'enum', enum: UserRole})
     role: UserRole;
@@ -29,4 +35,13 @@ export class User {
     
     @UpdateDateColumn() 
     updatedAt: Date;
+
+    @Column('boolean', {default: true})
+    isActive: boolean;
+
+    @BeforeUpdate()
+    @BeforeInsert()
+    checkFieldsBeforeChanges(){
+        this.email = this.email.toLowerCase().trim();
+    }
 }
