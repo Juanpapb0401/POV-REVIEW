@@ -1,6 +1,7 @@
 import { Review } from "src/reviews/entities/review.entity";
-import { PrimaryGeneratedColumn, Column, UpdateDateColumn, CreateDateColumn, OneToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, UpdateDateColumn, CreateDateColumn, OneToMany } from "typeorm";
 
+@Entity('movies')
 export class Movie {
 
     @PrimaryGeneratedColumn('uuid')
