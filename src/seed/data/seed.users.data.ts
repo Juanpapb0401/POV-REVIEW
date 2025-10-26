@@ -1,4 +1,5 @@
-import { UserRole } from '../../users/entities/user.entity';
+import { UserRole } from "src/auth/enums/roles.enum";
+
 
 export const seedUsers = [
   {
