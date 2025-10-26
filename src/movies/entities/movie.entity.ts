@@ -8,7 +8,7 @@ export class Movie {
     id: string;
 
     @Column('text')
-    tittle: string;
+    title: string;
 
     @Column('text')
     description: string;

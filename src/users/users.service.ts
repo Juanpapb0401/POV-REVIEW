@@ -16,7 +16,8 @@ export class UsersService {
     private readonly dataSource: DataSource,
   ) {}
 
-  asynccreate(createUserDto: CreateUserDto){
+
+  async create(createUserDto: CreateUserDto){
     try {
       const user = this.userRepository.create(createUserDto);
       return this.userRepository.save(user);
@@ -51,3 +52,4 @@ export class UsersService {
     }
   }
 }
+

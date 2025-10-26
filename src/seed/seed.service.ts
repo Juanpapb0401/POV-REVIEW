@@ -1,48 +1,87 @@
 import { Injectable } from '@nestjs/common';
-import { MoviesService } from 'src/movies/movies.service';
-import { ReviewsService } from 'src/reviews/reviews.service';
-import { User } from 'src/users/entities/user.entity';
-import { UsersService } from 'src/users/users.service';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import * as bcrypt from 'bcryptjs';
+import { User } from '../users/entities/user.entity';
+import { Movie } from '../movies/entities/movie.entity';
+import { Review } from '../reviews/entities/review.entity';
+import { seedUsers } from './data/seed.users.data';
+import { seedMovies } from './data/seed.movies.data';
+import { seedReviews } from './data/seed.reviews.data';
 
 @Injectable()
 export class SeedService {
+	constructor(
+		@InjectRepository(User)
+		private readonly userRepository: Repository<User>,
+		@InjectRepository(Movie)
+		private readonly movieRepository: Repository<Movie>,
+		@InjectRepository(Review)
+		private readonly reviewRepository: Repository<Review>,
+	) {}
 
-    constructor(private readonly usersService: UsersService,
-                private readonly moviesService: MoviesService,
-                private readonly reviewsService: ReviewsService,
-    ) {}
+	async runSeed() {
+		const createdUsers: any[] = [];
+		const createdMovies: any[] = [];
+		const createdReviews: any[] = [];
 
-    async runSeed() {
-        await this.insertNewUsers();
-        await this.insertNewMovies();
-        await this.insertNewReviews();
-        return 'Seed executed successfully';
-    }
+		// Users: insert if not exists (with bcrypt hashing)
+		for (const u of seedUsers) {
+			const existing = await this.userRepository.findOneBy({ email: u.email });
+			if (existing) {
+				createdUsers.push({ id: existing.id, email: existing.email, name: existing.name, status: 'already-exists' });
+				continue;
+			}
+			
+			const passwordHash = u.password ? await bcrypt.hash(u.password, 10) : undefined;
+			const user = this.userRepository.create({ ...u, password: passwordHash } as any);
+			const saved = (await this.userRepository.save(user)) as unknown as User;
+			createdUsers.push({ id: saved.id, email: saved.email, name: saved.name, status: 'created' });
+		}
 
-    async insertNewUsers() {
-        await this.usersService.deleteAllUsers();
-        //const users = initialData.users;
+		// Movies: insert if not exists
+		for (const m of seedMovies) {
+			const existing = await this.movieRepository.findOneBy({ title: (m as any).title });
+			if (existing) {
+				createdMovies.push({ id: existing.id, title: (existing as any).title, status: 'already-exists' });
+				continue;
+			}
+			const movie = this.movieRepository.create(m as any);
+			const saved = (await this.movieRepository.save(movie)) as unknown as Movie;
+			createdMovies.push({ id: saved.id, title: (saved as any).title, status: 'created' });
+		}
 
-        const insertPromises : Promise<User | undefined>[] = [];
+		// Reviews: link to movie by title
+		for (const r of seedReviews) {
+			const movie = await this.movieRepository.findOneBy({ title: r.movieTitle as any });
+			if (!movie) {
+				console.warn(`Movie not found for review: ${r.movieTitle}`);
+				continue;
+			}
+			
+			const existing = await this.reviewRepository.findOneBy({ comment: r.comment, name: r.name });
+			if (existing) {
+				createdReviews.push({ id: existing.id, name: existing.name, status: 'already-exists' });
+				continue;
+			}
+			
+			const review = this.reviewRepository.create({
+				name: r.name,
+				rating: r.rating,
+				comment: r.comment,
+				movie: movie,
+			} as any);
+			const saved = (await this.reviewRepository.save(review)) as unknown as Review;
+			createdReviews.push({ id: saved.id, name: saved.name, movieId: movie.id, status: 'created' });
+		}
 
-        //users.forEach(user => {
-        //    insertPromises.push(this.usersService.create(user));
-        //});
+		return {
+			ok: true,
+			message: 'Seed execution completed',
+			usersCreated: createdUsers,
+			moviesCreated: createdMovies,
+			reviewsCreated: createdReviews,
+		};
+	}
 
-        await Promise.all(insertPromises); //necesito controlar una promesa por si falla
-        // allSettled : espera a que todas las promesas se resuelvan
-        // race : espera a que una promesa se resuelva
-        // resolve: resuelve una promosa como tal
-        return true;
-    }
-
-    async insertNewMovies() {
-        //const movies = [];
-        //return movies;
-    }
-
-    async insertNewReviews() {
-        //const reviews = [];
-        //return reviews;
-    }
 }

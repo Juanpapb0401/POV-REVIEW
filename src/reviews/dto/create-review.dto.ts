@@ -4,7 +4,7 @@ import { Review } from "../entities/review.entity";
 export class CreateReviewDto {
 
     @IsString()
-    tittle: string;
+    title: string;
     
     @IsString()
     description: string;

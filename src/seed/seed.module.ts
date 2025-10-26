@@ -1,13 +1,14 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { SeedService } from './seed.service';
 import { SeedController } from './seed.controller';
-import { UsersModule } from 'src/users/users.module';
-import { MoviesModule } from 'src/movies/movies.module';
-import { ReviewsModule } from 'src/reviews/reviews.module';
+import { User } from '../users/entities/user.entity';
+import { Movie } from '../movies/entities/movie.entity';
+import { Review } from '../reviews/entities/review.entity';
 
 @Module({
   controllers: [SeedController],
   providers: [SeedService],
-  imports: [UsersModule, MoviesModule, ReviewsModule],
+  imports: [TypeOrmModule.forFeature([User, Movie, Review])],
 })
 export class SeedModule {}
