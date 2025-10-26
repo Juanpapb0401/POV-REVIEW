@@ -1,11 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, UpdateDateColumn, CreateDateColumn, Unique, BeforeUpdate, BeforeInsert } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, UpdateDateColumn, CreateDateColumn, BeforeUpdate, BeforeInsert } from "typeorm";
 import { IsEmail } from "class-validator";
-
-export enum UserRole {
-    ADMIN = 'admin',
-    USER = 'user'
-}
-
+import { UserRole } from "../../auth/enums/roles.enum";
 @Entity('users')
 export class User {
 
@@ -25,10 +20,14 @@ export class User {
     @Column({
         type: 'text'
     })
-    password: string; // en el  repo del profe es opcional, pero no puede ser
+    password?: string; // en el  repo del profe es opcional, pero no puede ser
 
-    @Column({ type: 'enum', enum: UserRole})
-    role: UserRole;
+    @Column({
+        type:'text',
+        array:true,
+        default: [UserRole.USER]
+    })
+    roles:string[];
 
     @CreateDateColumn() 
     createdAt: Date;
