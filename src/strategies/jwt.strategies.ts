@@ -31,7 +31,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
         if(!user.isActive) throw new UnauthorizedException(`token invalido`);
 
-        delete user.password;
+        //delete user.password;
 
         return user;
 

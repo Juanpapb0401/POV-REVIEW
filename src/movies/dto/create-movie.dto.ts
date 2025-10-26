@@ -4,7 +4,7 @@ import { Review } from "src/reviews/entities/review.entity";
 export class CreateMovieDto {
 
     @IsString()
-    tittle: string;
+    title: string;
     
     @IsString()
     description: string;
