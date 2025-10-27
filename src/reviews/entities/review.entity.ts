@@ -1,4 +1,5 @@
 import { Movie } from "src/movies/entities/movie.entity";
+import { User } from "src/users/entities/user.entity";
 import { Entity, PrimaryGeneratedColumn, Column, UpdateDateColumn, CreateDateColumn, ManyToOne } from "typeorm";
 
 @Entity('reviews')
@@ -18,6 +19,9 @@ export class Review {
 
     @ManyToOne(()=> Movie, (movie) => movie.reviews, {onDelete: 'CASCADE'})
     movie: Movie;
+
+    @ManyToOne(()=> User, (user) => user.reviews, {onDelete: 'CASCADE'})
+    user: User;
 
     @CreateDateColumn({
     type: 'timestamp',

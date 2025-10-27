@@ -55,28 +55,55 @@ export class SeedService {
 			createdMovies.push({ id: saved.id, title: (saved as any).title, status: 'created' });
 		}
 
-		// Reviews: link to movie by title
+		// Reviews: link to movie by title and user by email
 		for (const r of seedReviews) {
+			// Buscar la película
 			const movie = await this.movieRepository.findOneBy({ title: r.movieTitle as any });
 			if (!movie) {
 				console.warn(`Movie not found for review: ${r.movieTitle}`);
 				continue;
 			}
 			
-			const existing = await this.reviewRepository.findOneBy({ comment: r.comment, name: r.name });
-			if (existing) {
-				createdReviews.push({ id: existing.id, name: existing.name, status: 'already-exists' });
+			// Buscar el usuario
+			const user = await this.userRepository.findOneBy({ email: r.userEmail as any });
+			if (!user) {
+				console.warn(`User not found for review: ${r.userEmail}`);
 				continue;
 			}
 			
+			// Verificar si ya existe la review (por nombre y usuario)
+			const existing = await this.reviewRepository.findOneBy({ 
+				name: r.name, 
+				user: { id: user.id } 
+			});
+			if (existing) {
+				createdReviews.push({ 
+					id: existing.id, 
+					userName: user.name, 
+					userEmail: user.email,
+					movieTitle: movie.title,
+					status: 'already-exists' 
+				});
+				continue;
+			}
+			
+			// Crear la review vinculada al usuario y película
 			const review = this.reviewRepository.create({
-				name: r.name,
+				name: r.name, // Nombre/título de la review
 				rating: r.rating,
 				comment: r.comment,
 				movie: movie,
+				user: user,
 			} as any);
 			const saved = (await this.reviewRepository.save(review)) as unknown as Review;
-			createdReviews.push({ id: saved.id, name: saved.name, movieId: movie.id, status: 'created' });
+			createdReviews.push({ 
+				id: saved.id, 
+				userName: user.name,
+				userEmail: user.email,
+				movieTitle: movie.title,
+				movieId: movie.id, 
+				status: 'created' 
+			});
 		}
 
 		return {

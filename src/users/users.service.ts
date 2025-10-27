@@ -5,6 +5,8 @@ import { UpdateUserRolesDto } from './dto/update-user-roles.dto';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
+import { PaginationDto } from './dto/pagination.dto';
+import { isUUID } from 'class-validator';
 
 @Injectable()
 export class UsersService {
@@ -20,20 +22,48 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto){
     try {
+      
       const user = this.userRepository.create(createUserDto);
-      return this.userRepository.save(user);
+      await this.userRepository.save(user);
+      return user
 
     } catch (error) {
       this.handleException(error);
     }
   }
 
-  findAll() {
-    return `This action returns all users`;
+  findAll(paginationDto: PaginationDto) {
+    try {
+      const {limit, offset} = paginationDto
+      return this.userRepository.find({
+        take:limit,
+        skip:offset
+      })
+      
+    } catch (error) {
+      this.handleException(error)
+    }
+
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(term: string) {
+    let user: User | null;
+
+    if(isUUID(term)){
+      user = await this.userRepository.findOne({
+        where: { id: term },
+        relations: ['reviews', 'reviews.movie']
+      });
+    }else{
+      const queryBuilder = this.userRepository.createQueryBuilder('user');
+      user = await queryBuilder
+        .where('user.email = :email', { email: term })
+        .leftJoinAndSelect('user.reviews', 'reviews')
+        .leftJoinAndSelect('reviews.movie', 'movie')
+        .getOne();
+    }
+    if(!user) throw new NotFoundException(`User with term ${term} not found`);
+    return user;
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

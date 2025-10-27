@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, UpdateDateColumn, CreateDateColumn, BeforeUpdate, BeforeInsert } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, UpdateDateColumn, CreateDateColumn, BeforeUpdate, BeforeInsert, OneToMany } from "typeorm";
 import { IsEmail } from "class-validator";
 import { UserRole } from "../../auth/enums/roles.enum";
+import { Review } from "src/reviews/entities/review.entity";
 @Entity('users')
 export class User {
 
@@ -28,6 +29,9 @@ export class User {
         default: [UserRole.USER]
     })
     roles:string[];
+
+    @OneToMany(() => Review, (review) => review.user, {cascade: true, eager: true})
+    reviews?: Review[];
 
     @CreateDateColumn() 
     createdAt: Date;
