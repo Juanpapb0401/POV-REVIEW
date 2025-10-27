@@ -6,14 +6,14 @@ export const seedUsers = [
     name: 'Admin User',
     email: 'admin@example.com',
     password: 'admin123', // cambiar por hash en produccion
-    role: UserRole.ADMIN,
+    roles: [UserRole.ADMIN],
     isActive: true,
   },
   {
     name: 'Regular User',
     email: 'user@example.com',
     password: 'user123',
-    role: UserRole.USER,
+    roles: [UserRole.USER],
     isActive: true,
   },
 ];

@@ -1,6 +1,7 @@
-import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdateUserRolesDto } from './dto/update-user-roles.dto';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
@@ -41,6 +42,36 @@ export class UsersService {
 
   remove(id: number) {
     return `This action removes a #${id} user`;
+  }
+
+  async updateUserRoles(userId: string, updateUserRolesDto: UpdateUserRolesDto) {
+    try {
+      // Verificar que el usuario existe
+      const user = await this.userRepository.findOne({ where: { id: userId } });
+      
+      if (!user) {
+        throw new NotFoundException(`User with ID ${userId} not found`);
+      }
+
+      // Actualizar los roles
+      user.roles = updateUserRolesDto.roles;
+      
+      const updatedUser = await this.userRepository.save(user);
+      
+      // Remover password de la respuesta
+      delete updatedUser.password;
+      
+      return {
+        message: 'User roles updated successfully',
+        user: updatedUser
+      };
+
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      this.handleException(error);
+    }
   }
 
   async deleteAllUsers() {}

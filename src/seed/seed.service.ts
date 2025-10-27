@@ -29,14 +29,18 @@ export class SeedService {
 		for (const u of seedUsers) {
 			const existing = await this.userRepository.findOneBy({ email: u.email });
 			if (existing) {
-				createdUsers.push({ id: existing.id, email: existing.email, name: existing.name, status: 'already-exists' });
+				createdUsers.push({ id: existing.id, email: existing.email, name: existing.name, roles: existing.roles, status: 'already-exists' });
 				continue;
 			}
 			
 			const passwordHash = u.password ? await bcrypt.hash(u.password, 10) : undefined;
-			const user = this.userRepository.create({ ...u, password: passwordHash } as any);
+			const user = this.userRepository.create({ 
+				...u, 
+				password: passwordHash,
+				roles: u.roles || ['user'] // Usar los roles del seed o 'user' por defecto
+			} as any);
 			const saved = (await this.userRepository.save(user)) as unknown as User;
-			createdUsers.push({ id: saved.id, email: saved.email, name: saved.name, status: 'created' });
+			createdUsers.push({ id: saved.id, email: saved.email, name: saved.name, roles: saved.roles, status: 'created' });
 		}
 
 		// Movies: insert if not exists
