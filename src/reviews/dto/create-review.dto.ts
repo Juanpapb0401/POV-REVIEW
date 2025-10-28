@@ -1,26 +1,17 @@
-import { IsArray, IsIn, IsOptional, IsString } from "class-validator";
-import { Review } from "../entities/review.entity";
+import { IsString, IsNumber, Min, Max, IsUUID } from "class-validator";
 
 export class CreateReviewDto {
+    @IsString()
+    name: string;
+
+    @IsNumber()
+    @Min(1)
+    @Max(5)
+    rating: number;
 
     @IsString()
-    title: string;
-    
-    @IsString()
-    description: string;
-    
-    @IsString()
-    director: string;
-    
-    @IsString()
-    releaseDate: Date;
-    
-    @IsString()
-    @IsIn(['action', 'comedy', 'drama', 'horror', 'romance', 'sci-fi', 'thriller']) // hay que especificar
-    genre: string;
+    comment: string;
 
-    @IsArray()
-    @IsOptional()
-    reviews?: Review[];
-    
+    @IsUUID()
+    movieId: string;
 }

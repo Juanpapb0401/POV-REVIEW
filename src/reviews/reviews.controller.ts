@@ -1,34 +1,56 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { ReviewsService } from './reviews.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
+import { Auth } from '../auth/decorators/auth.decorator';
+import { GetUser } from '../auth/decorators/get-user.decorator';
+import { User } from '../users/entities/user.entity';
+import { UserRole } from '../auth/enums/roles.enum';
 
 @Controller('reviews')
 export class ReviewsController {
   constructor(private readonly reviewsService: ReviewsService) {}
 
   @Post()
-  create(@Body() createReviewDto: CreateReviewDto) {
-    return this.reviewsService.create(createReviewDto);
+  @Auth()
+  create(@Body() createReviewDto: CreateReviewDto, @GetUser() user: User) {
+    return this.reviewsService.create(createReviewDto, user);
   }
 
   @Get()
+  @Auth()
   findAll() {
     return this.reviewsService.findAll();
   }
 
+  @Get('movie/:movieId')
+  @Auth()
+  getMovieReviews(@Param('movieId') movieId: string) {
+    return this.reviewsService.getMovieReviews(movieId);
+  }
+
+  @Get('user/:userId')
+  @Auth()
+  getUserReviews(@Param('userId') userId: string) {
+    return this.reviewsService.getUserReviews(userId);
+  }
+
   @Get(':id')
+  @Auth()
   findOne(@Param('id') id: string) {
-    return this.reviewsService.findOne(+id);
+    return this.reviewsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateReviewDto: UpdateReviewDto) {
-    return this.reviewsService.update(+id, updateReviewDto);
+  @Auth()
+  update(@Param('id') id: string, @Body() updateReviewDto: UpdateReviewDto, @GetUser() user: User) {
+    return this.reviewsService.update(id, updateReviewDto, user);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.reviewsService.remove(+id);
+  @Auth()
+  remove(@Param('id') id: string, @GetUser() user: User) {
+    return this.reviewsService.remove(id, user);
   }
 }
+
