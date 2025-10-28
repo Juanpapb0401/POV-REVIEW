@@ -30,7 +30,7 @@ export class User {
     })
     roles:string[];
 
-    @OneToMany(() => Review, (review) => review.user, {cascade: true, eager: true})
+    @OneToMany(() => Review, (review) => review.user, {cascade: true})
     reviews?: Review[];
 
     @CreateDateColumn() 

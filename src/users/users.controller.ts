@@ -8,6 +8,7 @@ import { UserRoleGuard } from '../auth/guards/user-role.guard';
 import { RoleProtected } from '../auth/decorators/role-protected/role-protected.decorator';
 import { UserRole } from '../auth/enums/roles.enum';
 import { PaginationDto } from './dto/pagination.dto';
+import { Auth } from 'src/auth/decorators/auth.decorator';
 
 @Controller('users')
 export class UsersController {
@@ -19,6 +20,7 @@ export class UsersController {
   }
 
   @Get()
+  @Auth(UserRole.ADMIN)
   findAll(@Query() paginationDto: PaginationDto) {
     return this.usersService.findAll(paginationDto);
   }
