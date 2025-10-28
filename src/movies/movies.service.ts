@@ -1,26 +1,62 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
+import { Movie } from './entities/movie.entity';
 
 @Injectable()
 export class MoviesService {
-  create(createMovieDto: CreateMovieDto) {
-    return 'This action adds a new movie';
+  constructor(
+    @InjectRepository(Movie)
+    private readonly movieRepository: Repository<Movie>,
+  ) {}
+
+  async create(createMovieDto: CreateMovieDto): Promise<Movie> {
+    const { title, description, director, genre } = createMovieDto;
+    const releaseDate = new Date(createMovieDto.releaseDate);
+
+    const movie = this.movieRepository.create({
+      title,
+      description,
+      director,
+      releaseDate,
+      genre,
+    });
+
+    return await this.movieRepository.save(movie);
   }
 
-  findAll() {
-    return `This action returns all movies`;
+  async findAll(): Promise<Movie[]> {
+    return await this.movieRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} movie`;
+  async findOne(id: string): Promise<Movie> {
+    const movie = await this.movieRepository.findOne({ where: { id } });
+    if (!movie) {
+      throw new NotFoundException(`Movie with id ${id} not found`);
+    }
+    return movie;
   }
 
-  update(id: number, updateMovieDto: UpdateMovieDto) {
-    return `This action updates a #${id} movie`;
+  async update(id: string, updateMovieDto: UpdateMovieDto): Promise<Movie> {
+    const preloadData: Partial<Movie> = { id, ...updateMovieDto } as Partial<Movie>;
+    if (updateMovieDto.releaseDate) {
+      (preloadData as any).releaseDate = new Date(updateMovieDto.releaseDate);
+    }
+
+    const movie = await this.movieRepository.preload(preloadData);
+    if (!movie) {
+      throw new NotFoundException(`Movie with id ${id} not found`);
+    }
+    return await this.movieRepository.save(movie);
   }
-V
-  remove(id: number) {
-    return `This action removes a #${id} movie`;
+
+  async remove(id: string): Promise<void> {
+    const movie = await this.movieRepository.findOne({ where: { id } });
+    if (!movie) {
+      throw new NotFoundException(`Movie with id ${id} not found`);
+    }
+    await this.movieRepository.remove(movie);
   }
 }
