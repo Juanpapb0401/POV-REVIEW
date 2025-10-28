@@ -223,6 +223,95 @@
 			"response": []
 		},
 		{
+			"name": "Update User",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"Alice Update 2\",\n    \"email\":\"alice2@example.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/users/0517362f-0dbb-4e91-b53f-18da63ac862a",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"users",
+						"0517362f-0dbb-4e91-b53f-18da63ac862a"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImU4ODY1YmNjLWJmYWItNDBiZS05NGEwLWVmNWJkMTJjY2NhMiIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJpYXQiOjE3NjE2MjE2NTEsImV4cCI6MTc2MTYyNTI1MX0.nJE8oIkE-GOHBYzobB6QggjILAJNVSybJvZyn4tkotQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/users/f41c69c9-fa2b-4eb7-b01e-eecee594b4a7",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"users",
+						"f41c69c9-fa2b-4eb7-b01e-eecee594b4a7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get UserProfile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZlMzNkZTg5LTFlYWEtNDQwNi04YWQ0LWZiZWQ5YjE4ZGQ1OSIsImVtYWlsIjoiYm9iQGV4YW1wbGUuY29tIiwiaWF0IjoxNzYxNjIyMTgwLCJleHAiOjE3NjE2MjU3ODB9.uFfpWzeyivyXL7usMgaiJhgqMoufXP43lr8EDVSdvSA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/users/profile",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"users",
+						"profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Seed",
 			"request": {
 				"method": "GET",
