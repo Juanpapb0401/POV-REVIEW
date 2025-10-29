@@ -1,4 +1,4 @@
-import { IsString, IsNumber, Min, Max, IsUUID } from "class-validator";
+import { IsString, IsNumber, Min, Max, IsUUID, IsOptional } from "class-validator";
 
 export class CreateReviewDto {
     @IsString()
@@ -12,6 +12,8 @@ export class CreateReviewDto {
     @IsString()
     comment: string;
 
+    // movieId can be provided in the body or injected from the URL by the controller
     @IsUUID()
-    movieId: string;
+    @IsOptional()
+    movieId?: string;
 }

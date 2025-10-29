@@ -22,7 +22,7 @@ export class Movie {
     @Column('text')
     genre: string;
 
-    @OneToMany(() => Review, (review) => review.movie, {cascade: true, eager: true})
+    @OneToMany(() => Review, (review) => review.movie, { cascade: true })
     reviews?: Review[];
 
     @CreateDateColumn({

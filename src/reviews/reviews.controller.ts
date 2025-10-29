@@ -17,6 +17,13 @@ export class ReviewsController {
     return this.reviewsService.create(createReviewDto, user);
   }
 
+  @Post('movie/:movieId')
+  @Auth()
+  createForMovie(@Param('movieId') movieId: string, @Body() createReviewDto: CreateReviewDto, @GetUser() user: User,) {
+    createReviewDto.movieId = movieId;
+    return this.reviewsService.create(createReviewDto, user);
+  }
+
   @Get()
   @Auth()
   findAll() {
