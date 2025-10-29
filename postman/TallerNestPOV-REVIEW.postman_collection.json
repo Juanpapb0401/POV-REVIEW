@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "d0a484bb-1b52-4334-8820-8c0c8ab06ff6",
+		"_postman_id": "a8ca6839-ad7e-41b7-8c54-9a289bd339d5",
 		"name": "TallerNestPOV-REVIEW",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "39260900"
+		"_exporter_id": "48854536"
 	},
 	"item": [
 		{
@@ -21,13 +21,11 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:3000/api/auth/register",
+					"raw": "{{base_url}}/auth/register",
 					"host": [
-						"localhost"
+						"{{base_url}}"
 					],
-					"port": "3000",
 					"path": [
-						"api",
 						"auth",
 						"register"
 					]
@@ -37,6 +35,27 @@
 		},
 		{
 			"name": "Login Admin Role",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let response = pm.response.json();\r",
+							"\r",
+							"if (response.token) {\r",
+							"    pm.environment.set(\"admin_token\", response.token);\r",
+							"    console.log(\"Token guardado en admin_token\");\r",
+							"} else {\r",
+							"    console.log(\"No se encontró el token en la respuesta\");\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -50,13 +69,11 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:3000/api/auth/login",
+					"raw": "{{base_url}}/auth/login",
 					"host": [
-						"localhost"
+						"{{base_url}}"
 					],
-					"port": "3000",
 					"path": [
-						"api",
 						"auth",
 						"login"
 					]
@@ -66,6 +83,27 @@
 		},
 		{
 			"name": "Login User Role",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let response = pm.response.json();\r",
+							"\r",
+							"if (response.token) {\r",
+							"    pm.environment.set(\"user_token\", response.token);\r",
+							"    console.log(\"Token guardado en admin_token\");\r",
+							"} else {\r",
+							"    console.log(\"No se encontró el token en la respuesta\");\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -79,13 +117,11 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:3000/api/auth/login",
+					"raw": "{{base_url}}/auth/login",
 					"host": [
-						"localhost"
+						"{{base_url}}"
 					],
-					"port": "3000",
 					"path": [
-						"api",
 						"auth",
 						"login"
 					]
@@ -109,13 +145,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/api/auth/private",
+					"raw": "{{base_url}}/auth/private",
 					"host": [
-						"localhost"
+						"{{base_url}}"
 					],
-					"port": "3000",
 					"path": [
-						"api",
 						"auth",
 						"private"
 					]
@@ -148,13 +182,11 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:3000/api/users/1dfc6943-785c-4638-88f5-66db1f2f780d/roles",
+					"raw": "{{base_url}}/users/1dfc6943-785c-4638-88f5-66db1f2f780d/roles",
 					"host": [
-						"localhost"
+						"{{base_url}}"
 					],
-					"port": "3000",
 					"path": [
-						"api",
 						"users",
 						"1dfc6943-785c-4638-88f5-66db1f2f780d",
 						"roles"
@@ -179,13 +211,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/api/users?limit=3&offset=1",
+					"raw": "{{base_url}}/users?limit=3&offset=1",
 					"host": [
-						"localhost"
+						"{{base_url}}"
 					],
-					"port": "3000",
 					"path": [
-						"api",
 						"users"
 					],
 					"query": [
@@ -208,13 +238,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/api/users/bob@example.com",
+					"raw": "{{base_url}}/users/bob@example.com",
 					"host": [
-						"localhost"
+						"{{base_url}}"
 					],
-					"port": "3000",
 					"path": [
-						"api",
 						"users",
 						"bob@example.com"
 					]
@@ -237,13 +265,11 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:3000/api/users/0517362f-0dbb-4e91-b53f-18da63ac862a",
+					"raw": "{{base_url}}/users/0517362f-0dbb-4e91-b53f-18da63ac862a",
 					"host": [
-						"localhost"
+						"{{base_url}}"
 					],
-					"port": "3000",
 					"path": [
-						"api",
 						"users",
 						"0517362f-0dbb-4e91-b53f-18da63ac862a"
 					]
@@ -267,13 +293,11 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/api/users/f41c69c9-fa2b-4eb7-b01e-eecee594b4a7",
+					"raw": "{{base_url}}/users/f41c69c9-fa2b-4eb7-b01e-eecee594b4a7",
 					"host": [
-						"localhost"
+						"{{base_url}}"
 					],
-					"port": "3000",
 					"path": [
-						"api",
 						"users",
 						"f41c69c9-fa2b-4eb7-b01e-eecee594b4a7"
 					]
@@ -297,13 +321,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/api/users/profile",
+					"raw": "{{base_url}}/users/profile",
 					"host": [
-						"localhost"
+						"{{base_url}}"
 					],
-					"port": "3000",
 					"path": [
-						"api",
 						"users",
 						"profile"
 					]
@@ -317,15 +339,185 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/seed",
-					"protocol": "http",
+					"raw": "{{base_url}}/seed",
 					"host": [
-						"localhost"
+						"{{base_url}}"
 					],
-					"port": "3000",
 					"path": [
-						"api",
 						"seed"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Movie",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let response = pm.response.json();\r",
+							"\r",
+							"if (response.id) {\r",
+							"    pm.environment.set(\"movie_token\", response.id);\r",
+							"    console.log(\"Token guardado en movie_token\");\r",
+							"} else {\r",
+							"    console.log(\"No se encontró el token en la respuesta\");\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"Inception 2\",\r\n  \"description\": \"Dream within a dream\",\r\n  \"director\": \"Christopher Nolan\",\r\n  \"releaseDate\": \"2010-07-16\",\r\n  \"genre\": \"drama\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/movies",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"movies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all movies",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/movies",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"movies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get movie by ID",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"Inception\",\r\n  \"description\": \"Dream within a dream\",\r\n  \"director\": \"Christopher Nolan\",\r\n  \"releaseDate\": \"2010-07-16\",\r\n  \"genre\": \"drama\"\r\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/movies/{{movie_token}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"movies",
+						"{{movie_token}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Movie",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"description\": \"Updated description\",\r\n  \"releaseDate\": \"2011-01-01\",\r\n  \"genre\": \"thriller\"\r\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/movies/{{movie_token}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"movies",
+						"{{movie_token}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Movie",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"description\": \"Updated description\",\r\n  \"releaseDate\": \"2011-01-01\",\r\n  \"genre\": \"thriller\"\r\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/movies/{{movie_token}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"movies",
+						"{{movie_token}}"
 					]
 				}
 			},
