@@ -1,19 +1,23 @@
 import { IsString, IsNumber, Min, Max, IsUUID, IsOptional } from "class-validator";
+import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateReviewDto {
-    @IsString()
-    name: string;
 
-    @IsNumber()
-    @Min(1)
-    @Max(5)
-    rating: number;
+  @ApiProperty()
+  @IsString()
+  name: string;
 
-    @IsString()
-    comment: string;
+  @ApiProperty()
+  @IsNumber()
+  @Min(1)
+  @Max(5)
+  rating: number;
 
-    // movieId can be provided in the body or injected from the URL by the controller
+  @ApiProperty()
+  @IsString()
+  comment: string;
+
     @IsUUID()
     @IsOptional()
-    movieId?: string;
+    movieId: string;
 }
