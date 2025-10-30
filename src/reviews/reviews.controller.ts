@@ -24,7 +24,6 @@ export class ReviewsController {
     return this.reviewsService.create(createReviewDto, user);
   }
 
-  //TODO:  Agregarle swagger a esta ruta
   @ApiOperation({ summary: 'Create a review for a movie' })
   @ApiParam({ name: 'movieId', description: 'Movie id (uuid)' })
   @ApiResponse({ status: 201, description: 'Review created', type: Review })
