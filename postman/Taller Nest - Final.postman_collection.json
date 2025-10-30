@@ -1,10 +1,9 @@
 {
 	"info": {
-		"_postman_id": "2f8b6334-9469-420a-a363-617900d778bb",
+		"_postman_id": "f3a0cd97-4195-47f6-be4d-f709fe6194df",
 		"name": "Taller Nest - Final",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "44330204",
-		"_collection_link": "https://thomasbrueck.postman.co/workspace/Thomas-Brueck's-Workspace~dee87767-b11d-4023-8efe-41705b360b59/collection/44330204-2f8b6334-9469-420a-a363-617900d778bb?action=share&source=collection_link&creator=44330204"
+		"_exporter_id": "48854536"
 	},
 	"item": [
 		{
@@ -15,6 +14,33 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\n    \"name\": \"Thomas2\",\n    \"email\": \"thomas2@gmail.com\",\n    \"password\": \"pepepeee\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/auth/register",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register Alternative user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Alternative\",\n    \"email\": \"alternative@gmail.com\",\n    \"password\": \"alternative\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -93,7 +119,7 @@
 							"\r",
 							"if (response.token) {\r",
 							"    pm.environment.set(\"user_token\", response.token);\r",
-							"    console.log(\"Token guardado en admin_token\");\r",
+							"    console.log(\"Token guardado en user_token\");\r",
 							"} else {\r",
 							"    console.log(\"No se encontró el token en la respuesta\");\r",
 							"}\r",
@@ -111,6 +137,54 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\n    \"email\":\"bob@example.com\",\n    \"password\": \"bob123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/auth/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Alternative User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let response = pm.response.json();\r",
+							"\r",
+							"if (response.token) {\r",
+							"    pm.environment.set(\"alt_token\", response.token);\r",
+							"    console.log(\"Token guardado en alt_token\");\r",
+							"} else {\r",
+							"    console.log(\"No se encontró el token en la respuesta\");\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\":\"alternative@gmail.com\",\n    \"password\": \"alternative\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -279,6 +353,42 @@
 			"response": []
 		},
 		{
+			"name": "Update User by Alternative User",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{alt_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"Alice Update 2\",\n    \"email\":\"alice2@example.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/users/0517362f-0dbb-4e91-b53f-18da63ac862a",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users",
+						"0517362f-0dbb-4e91-b53f-18da63ac862a"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Delete User",
 			"request": {
 				"auth": {
@@ -293,6 +403,33 @@
 				},
 				"method": "DELETE",
 				"header": [],
+				"url": {
+					"raw": "{{base_url}}/users/f41c69c9-fa2b-4eb7-b01e-eecee594b4a7",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users",
+						"f41c69c9-fa2b-4eb7-b01e-eecee594b4a7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User by Alternative",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{alt_token}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "{{base_url}}/users/f41c69c9-fa2b-4eb7-b01e-eecee594b4a7",
 					"host": [
@@ -494,6 +631,42 @@
 			"response": []
 		},
 		{
+			"name": "Edit Movie by Alternative User",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{alt_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"description\": \"Updated description\",\r\n  \"releaseDate\": \"2011-01-01\",\r\n  \"genre\": \"thriller\"\r\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/movies/{{movie_token}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"movies",
+						"{{movie_token}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Delete Movie",
 			"request": {
 				"auth": {
@@ -504,6 +677,37 @@
 					{
 						"key": "Authorization",
 						"value": "Bearer {{admin_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"description\": \"Updated description\",\r\n  \"releaseDate\": \"2011-01-01\",\r\n  \"genre\": \"thriller\"\r\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/movies/{{movie_token}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"movies",
+						"{{movie_token}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Movie by Alternative User",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{alt_token}}",
 						"type": "text"
 					}
 				],
@@ -713,6 +917,42 @@
 			"response": []
 		},
 		{
+			"name": "Update Review by Alternative User",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{alt_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Nuevo nombre para mi review\",\n    \"rating\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/reviews/d5e5ebba-5f29-4ba2-8ce8-73403d367207",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"reviews",
+						"d5e5ebba-5f29-4ba2-8ce8-73403d367207"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Delete Review",
 			"request": {
 				"auth": {
@@ -727,6 +967,37 @@
 				},
 				"method": "DELETE",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{base_url}}/reviews/d5e5ebba-5f29-4ba2-8ce8-73403d367207",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"reviews",
+						"d5e5ebba-5f29-4ba2-8ce8-73403d367207"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Review by Alternative User",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{alt_token}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": ""
