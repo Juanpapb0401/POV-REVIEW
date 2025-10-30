@@ -34,6 +34,7 @@ bun install
 
 Crea un archivo `.env` en la raíz del proyecto con el siguiente contenido:
 
+.docker.env
 ```env
 # Database Configuration
 DB_HOST=localhost
@@ -41,6 +42,18 @@ DB_PORT=5432
 DB_USERNAME=pov-user
 DB_PASSWORD=pov-password
 DB_NAME=pov-review-db
+
+# JWT Configuration
+JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
+```
+
+.render.env
+```env
+DB_HOST=dpg-d41sr3u3jp1c739l2fag-a
+DB_PORT=5432
+DB_USERNAME=povuser
+DB_PASSWORD=4Ac3RYZg8e8sECzlKUKjycFouokIQxkv
+DB_NAME=povreviewdb
 
 # JWT Configuration
 JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
