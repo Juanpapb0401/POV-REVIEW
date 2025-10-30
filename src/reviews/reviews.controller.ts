@@ -23,10 +23,16 @@ export class ReviewsController {
   create(@Body() createReviewDto: CreateReviewDto, @GetUser() user: User) {
     return this.reviewsService.create(createReviewDto, user);
   }
+  
+  //TODO:  Agregarle swagger a esta ruta
+  @Post('movie/:movieId')
+  @Auth()
+  createForMovie(@Param('movieId') movieId: string, @Body() createReviewDto: CreateReviewDto, @GetUser() user: User,) {
+    createReviewDto.movieId = movieId;
+    return this.reviewsService.create(createReviewDto, user);
+  }
 
   @Get()
-  @Auth()
-  @ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'List all reviews' })
   @ApiResponse({ status: 200, description: 'Array of reviews', type: [Review] })
   @ApiResponse({ status: 400, description: 'Bad Request'})
@@ -35,8 +41,6 @@ export class ReviewsController {
   }
 
   @Get('movie/:movieId')
-  @Auth()
-  @ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Get reviews by movie id' })
   @ApiParam({ name: 'movieId', description: 'Movie id (uuid)' })
   @ApiResponse({ status: 200, description: 'Array of reviews', type: [Review] })
@@ -46,8 +50,6 @@ export class ReviewsController {
   }
 
   @Get('user/:userId')
-  @Auth()
-  @ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Get reviews by user id' })
   @ApiParam({ name: 'userId', description: 'User id (uuid)' })
   @ApiResponse({ status: 200, description: 'Array of reviews', type: [Review] })
@@ -57,8 +59,6 @@ export class ReviewsController {
   }
 
   @Get(':id')
-  @Auth()
-  @ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Get review by id' })
   @ApiParam({ name: 'id', description: 'Review id (uuid)' })
   @ApiResponse({ status: 200, description: 'Review found', type: Review })

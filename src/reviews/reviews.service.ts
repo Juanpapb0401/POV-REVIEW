@@ -43,8 +43,19 @@ export class ReviewsService {
         user,
       });
 
-      await this.reviewRepository.save(review);
-      return review;
+      const saved = await this.reviewRepository.save(review);
+
+      // Load saved review with relations to return a complete object
+      const result = await this.reviewRepository.findOne({
+        where: { id: (saved as any).id },
+        relations: ['movie', 'user'],
+      });
+
+      // sanitize
+      if (result && result.user) delete (result.user as any).password;
+      if (result && result.movie) (result.movie as any).reviews = undefined;
+
+      return result;
     } catch (error) {
       this.logger.error(error);
       throw error;
@@ -52,8 +63,14 @@ export class ReviewsService {
   }
 
   async findAll() {
-    return await this.reviewRepository.find({
+    const reviews = await this.reviewRepository.find({
       relations: ['movie', 'user'],
+    });
+
+    return reviews.map(r => {
+      if (r.user) delete (r.user as any).password;
+      if (r.movie) (r.movie as any).reviews = undefined;
+      return r;
     });
   }
 
@@ -70,6 +87,9 @@ export class ReviewsService {
     if (!review) {
       throw new NotFoundException(`Review with ID ${id} not found`);
     }
+
+    if (review.user) delete (review.user as any).password;
+    if (review.movie) (review.movie as any).reviews = undefined;
 
     return review;
   }
@@ -89,7 +109,17 @@ export class ReviewsService {
     }
 
     Object.assign(review, updateReviewDto);
-    return await this.reviewRepository.save(review);
+    const saved = await this.reviewRepository.save(review);
+
+    const result = await this.reviewRepository.findOne({
+      where: { id: (saved as any).id },
+      relations: ['movie', 'user'],
+    });
+
+    if (result && result.user) delete (result.user as any).password;
+    if (result && result.movie) (result.movie as any).reviews = undefined;
+
+    return result;
   }
 
   async remove(id: string, user: User) {
@@ -124,6 +154,15 @@ export class ReviewsService {
       throw new NotFoundException(`Movie with ID ${movieId} not found`);
     }
 
+    if (movie.reviews && movie.reviews.length) {
+      movie.reviews = movie.reviews.map(r => {
+        if ((r as any).user) delete ((r as any).user as any).password;
+        return r;
+      });
+    } else {
+      movie.reviews = [];
+    }
+
     return movie.reviews;
   }
 
@@ -132,9 +171,15 @@ export class ReviewsService {
       throw new BadRequestException('Invalid user ID format');
     }
 
-    return await this.reviewRepository.find({
+    const reviews = await this.reviewRepository.find({
       where: { user: { id: userId } },
-      relations: ['movie'],
+      relations: ['movie', 'user'],
+    });
+
+    return reviews.map(r => {
+      if (r.user) delete (r.user as any).password;
+      if (r.movie) (r.movie as any).reviews = undefined;
+      return r;
     });
   }
 }

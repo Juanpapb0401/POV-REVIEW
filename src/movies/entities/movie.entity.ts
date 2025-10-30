@@ -54,7 +54,7 @@ export class Movie {
         type: () => Review,
         isArray: true,
     })
-    @OneToMany(() => Review, (review) => review.movie, {cascade: true, eager: true})
+    @OneToMany(() => Review, (review) => review.movie, { cascade: true })
     reviews?: Review[];
 
     @ApiProperty({

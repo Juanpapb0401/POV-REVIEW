@@ -1,5 +1,5 @@
+import { IsString, IsNumber, Min, Max, IsUUID, IsOptional } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsNumber, Min, Max, IsUUID } from "class-validator";
 
 export class CreateReviewDto {
 
@@ -17,7 +17,7 @@ export class CreateReviewDto {
   @IsString()
   comment: string;
 
-  @ApiProperty()
-  @IsUUID()
-  movieId: string;
+    @IsUUID()
+    @IsOptional()
+    movieId: string;
 }
