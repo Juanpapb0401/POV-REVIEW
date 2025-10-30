@@ -25,25 +25,21 @@ export class ReviewsController {
   }
 
   @Get()
-  @Auth()
   findAll() {
     return this.reviewsService.findAll();
   }
 
   @Get('movie/:movieId')
-  @Auth()
   getMovieReviews(@Param('movieId') movieId: string) {
     return this.reviewsService.getMovieReviews(movieId);
   }
 
   @Get('user/:userId')
-  @Auth()
   getUserReviews(@Param('userId') userId: string) {
     return this.reviewsService.getUserReviews(userId);
   }
 
   @Get(':id')
-  @Auth()
   findOne(@Param('id') id: string) {
     return this.reviewsService.findOne(id);
   }

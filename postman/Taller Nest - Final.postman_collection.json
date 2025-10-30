@@ -1,19 +1,58 @@
 {
 	"info": {
-		"_postman_id": "f3a0cd97-4195-47f6-be4d-f709fe6194df",
+		"_postman_id": "9d45a996-5de1-4b79-acd0-632f0e3dabec",
 		"name": "Taller Nest - Final",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "48854536"
+		"_exporter_id": "44330204",
+		"_collection_link": "https://thomasbrueck.postman.co/workspace/Thomas-Brueck's-Workspace~dee87767-b11d-4023-8efe-41705b360b59/collection/44330204-9d45a996-5de1-4b79-acd0-632f0e3dabec?action=share&source=collection_link&creator=44330204"
 	},
 	"item": [
 		{
+			"name": "Seed",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/seed",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"seed"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let response = pm.response.json();",
+							"",
+							"if (response.id) {",
+							"    pm.environment.set(\"user_id\", response.id);",
+							"    console.log(\"Id guardado en user_id\");",
+							"} else {",
+							"    console.log(\"No se encontró el id en la respuesta\");",
+							"}",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"Thomas2\",\n    \"email\": \"thomas2@gmail.com\",\n    \"password\": \"pepepeee\"\n}",
+					"raw": "{\n    \"name\": \"Parra\",\n    \"email\": \"parra@gmail.com\",\n    \"password\": \"Qwerty123\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -103,6 +142,33 @@
 					"path": [
 						"auth",
 						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test de Roles",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/auth/private",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"auth",
+						"private"
 					]
 				}
 			},
@@ -205,88 +271,21 @@
 			"response": []
 		},
 		{
-			"name": "Test de Roles",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImU2NjYxNWFkLWJiYzYtNGRjOS1hM2QzLTAwZDlhM2NmZTNkMyIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJpYXQiOjE3NjE3Njc3NDAsImV4cCI6MTc2MTc3MTM0MH0.rwURGBfUcIaoTj94n_rtcQpWavb9JHdWRIPLKA8G8ps",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/auth/private",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"auth",
-						"private"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Change Role User to Admin",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImUxOTczMzk4LTQ4MWQtNDUwMi05ZWY0LTI3MmE2NTQ1MTUxMiIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJpYXQiOjE3NjE1MzI1NjEsImV4cCI6MTc2MTUzNjE2MX0.259gA-31zah4zuuP0Tqh3kCAuMMGj5vz7DDakZG2pIc",
-							"type": "string"
-						}
-					]
-				},
-				"method": "PATCH",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"roles\": [\"admin\"]\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{base_url}}/users/1dfc6943-785c-4638-88f5-66db1f2f780d/roles",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"users",
-						"1dfc6943-785c-4638-88f5-66db1f2f780d",
-						"roles"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Get All Users",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhNThjOTcxLWFiYTQtNGY2Zi05OTQxLWJlMzhhYmJmY2EwZCIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJpYXQiOjE3NjE3Njk2MDEsImV4cCI6MTc2MTc3MzIwMX0.2LGJdu8oWBewdqS0WavbWvYOSabeaZHYVn0RoLbfB-M",
-							"type": "string"
-						}
-					]
+					"type": "noauth"
 				},
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": "{{base_url}}/users?limit=3&offset=1",
+					"raw": "{{base_url}}/users?limit=6&offset=1",
 					"host": [
 						"{{base_url}}"
 					],
@@ -296,7 +295,7 @@
 					"query": [
 						{
 							"key": "limit",
-							"value": "3"
+							"value": "6"
 						},
 						{
 							"key": "offset",
@@ -308,18 +307,27 @@
 			"response": []
 		},
 		{
-			"name": "Get User By Id",
+			"name": "Get User By Email",
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": "{{base_url}}/users/bob@example.com",
+					"raw": "{{base_url}}/users/alice@example.com",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"users",
-						"bob@example.com"
+						"alice@example.com"
 					]
 				}
 			},
@@ -328,11 +336,20 @@
 		{
 			"name": "Update User",
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "PATCH",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\":\"Alice Update 2\",\n    \"email\":\"alice2@example.com\"\n}",
+					"raw": "{\n    \"name\":\"Otro update\",\n    \"email\":\"UPDATE@example.com\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -340,13 +357,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{base_url}}/users/0517362f-0dbb-4e91-b53f-18da63ac862a",
+					"raw": "{{base_url}}/users/{{user_id}}",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"users",
-						"0517362f-0dbb-4e91-b53f-18da63ac862a"
+						"{{user_id}}"
 					]
 				}
 			},
@@ -389,75 +406,19 @@
 			"response": []
 		},
 		{
-			"name": "Delete User",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImU4ODY1YmNjLWJmYWItNDBiZS05NGEwLWVmNWJkMTJjY2NhMiIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJpYXQiOjE3NjE2MjE2NTEsImV4cCI6MTc2MTYyNTI1MX0.nJE8oIkE-GOHBYzobB6QggjILAJNVSybJvZyn4tkotQ",
-							"type": "string"
-						}
-					]
-				},
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/users/f41c69c9-fa2b-4eb7-b01e-eecee594b4a7",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"users",
-						"f41c69c9-fa2b-4eb7-b01e-eecee594b4a7"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete User by Alternative",
+			"name": "Get UserProfile",
 			"request": {
 				"auth": {
 					"type": "noauth"
 				},
-				"method": "DELETE",
+				"method": "GET",
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer {{alt_token}}",
+						"value": "Bearer {{admin_token}}",
 						"type": "text"
 					}
 				],
-				"url": {
-					"raw": "{{base_url}}/users/f41c69c9-fa2b-4eb7-b01e-eecee594b4a7",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"users",
-						"f41c69c9-fa2b-4eb7-b01e-eecee594b4a7"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get UserProfile",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZlMzNkZTg5LTFlYWEtNDQwNi04YWQ0LWZiZWQ5YjE4ZGQ1OSIsImVtYWlsIjoiYm9iQGV4YW1wbGUuY29tIiwiaWF0IjoxNzYxNjIyMTgwLCJleHAiOjE3NjE2MjU3ODB9.uFfpWzeyivyXL7usMgaiJhgqMoufXP43lr8EDVSdvSA",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
 				"url": {
 					"raw": "{{base_url}}/users/profile",
 					"host": [
@@ -466,23 +427,6 @@
 					"path": [
 						"users",
 						"profile"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Seed",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/seed",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"seed"
 					]
 				}
 			},
@@ -498,12 +442,11 @@
 							"let response = pm.response.json();\r",
 							"\r",
 							"if (response.id) {\r",
-							"    pm.environment.set(\"movie_token\", response.id);\r",
-							"    console.log(\"Token guardado en movie_token\");\r",
+							"    pm.environment.set(\"movie_id\", response.id);\r",
+							"    console.log(\"Id guardado en movie_id\");\r",
 							"} else {\r",
-							"    console.log(\"No se encontró el token en la respuesta\");\r",
-							"}\r",
-							""
+							"    console.log(\"No se encontró el id en la respuesta\");\r",
+							"}"
 						],
 						"type": "text/javascript",
 						"packages": {},
@@ -582,13 +525,13 @@
 					"raw": "{\r\n  \"title\": \"Inception\",\r\n  \"description\": \"Dream within a dream\",\r\n  \"director\": \"Christopher Nolan\",\r\n  \"releaseDate\": \"2010-07-16\",\r\n  \"genre\": \"drama\"\r\n}"
 				},
 				"url": {
-					"raw": "{{base_url}}/movies/{{movie_token}}",
+					"raw": "{{base_url}}/movies/{{movie_id}}",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"movies",
-						"{{movie_token}}"
+						"{{movie_id}}"
 					]
 				}
 			},
@@ -618,13 +561,13 @@
 					"raw": "{\r\n  \"description\": \"Updated description\",\r\n  \"releaseDate\": \"2011-01-01\",\r\n  \"genre\": \"thriller\"\r\n}"
 				},
 				"url": {
-					"raw": "{{base_url}}/movies/{{movie_token}}",
+					"raw": "{{base_url}}/movies/{{movie_id}}",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"movies",
-						"{{movie_token}}"
+						"{{movie_id}}"
 					]
 				}
 			},
@@ -654,75 +597,13 @@
 					"raw": "{\r\n  \"description\": \"Updated description\",\r\n  \"releaseDate\": \"2011-01-01\",\r\n  \"genre\": \"thriller\"\r\n}"
 				},
 				"url": {
-					"raw": "{{base_url}}/movies/{{movie_token}}",
+					"raw": "{{base_url}}/movies/{{movie_id}}",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"movies",
-						"{{movie_token}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete Movie",
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{admin_token}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"description\": \"Updated description\",\r\n  \"releaseDate\": \"2011-01-01\",\r\n  \"genre\": \"thriller\"\r\n}"
-				},
-				"url": {
-					"raw": "{{base_url}}/movies/{{movie_token}}",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"movies",
-						"{{movie_token}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete Movie by Alternative User",
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{alt_token}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"description\": \"Updated description\",\r\n  \"releaseDate\": \"2011-01-01\",\r\n  \"genre\": \"thriller\"\r\n}"
-				},
-				"url": {
-					"raw": "{{base_url}}/movies/{{movie_token}}",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"movies",
-						"{{movie_token}}"
+						"{{movie_id}}"
 					]
 				}
 			},
@@ -730,19 +611,39 @@
 		},
 		{
 			"name": "Create Review",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let response = pm.response.json();",
+							"",
+							"if (response.id) {",
+							"    pm.environment.set(\"review_id\", response.id);",
+							"    console.log(\"Id guardado en review_id\");",
+							"} else {",
+							"    console.log(\"No se encontró el id en la respuesta\");",
+							"}",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhNThjOTcxLWFiYTQtNGY2Zi05OTQxLWJlMzhhYmJmY2EwZCIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJpYXQiOjE3NjE3Njc5NTQsImV4cCI6MTc2MTc3MTU1NH0.cPpE8cVUAPPOi_jPCfG2HiCrlchzEzz8ocGncjVOxwk",
-							"type": "string"
-						}
-					]
+					"type": "noauth"
 				},
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user_token}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n    \"name\": \"Mi review\",\n    \"rating\": 4,\n    \"comment\": \"No me llamo la atencion, el final estuvo muy malo\"\n}",
@@ -753,14 +654,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{base_url}}/reviews/movie/b9ae0ff2-ce25-414e-957e-5dcc5317c859",
+					"raw": "{{base_url}}/reviews/movie/{{movie_id}}",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"reviews",
 						"movie",
-						"b9ae0ff2-ce25-414e-957e-5dcc5317c859"
+						"{{movie_id}}"
 					]
 				}
 			},
@@ -770,14 +671,7 @@
 			"name": "Get All Reviews",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhNThjOTcxLWFiYTQtNGY2Zi05OTQxLWJlMzhhYmJmY2EwZCIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJpYXQiOjE3NjE3Njc5NTQsImV4cCI6MTc2MTc3MTU1NH0.cPpE8cVUAPPOi_jPCfG2HiCrlchzEzz8ocGncjVOxwk",
-							"type": "string"
-						}
-					]
+					"type": "noauth"
 				},
 				"method": "GET",
 				"header": [],
@@ -797,26 +691,19 @@
 			"name": "Get Movie Reviews",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhNThjOTcxLWFiYTQtNGY2Zi05OTQxLWJlMzhhYmJmY2EwZCIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJpYXQiOjE3NjE3Njc5NTQsImV4cCI6MTc2MTc3MTU1NH0.cPpE8cVUAPPOi_jPCfG2HiCrlchzEzz8ocGncjVOxwk",
-							"type": "string"
-						}
-					]
+					"type": "noauth"
 				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/reviews/movie/b9ae0ff2-ce25-414e-957e-5dcc5317c859",
+					"raw": "{{base_url}}/reviews/movie/{{movie_id}}",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"reviews",
 						"movie",
-						"b9ae0ff2-ce25-414e-957e-5dcc5317c859"
+						"{{movie_id}}"
 					]
 				}
 			},
@@ -826,14 +713,7 @@
 			"name": "Get User Reviews",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhNThjOTcxLWFiYTQtNGY2Zi05OTQxLWJlMzhhYmJmY2EwZCIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJpYXQiOjE3NjE3Njc5NTQsImV4cCI6MTc2MTc3MTU1NH0.cPpE8cVUAPPOi_jPCfG2HiCrlchzEzz8ocGncjVOxwk",
-							"type": "string"
-						}
-					]
+					"type": "noauth"
 				},
 				"method": "GET",
 				"header": [],
@@ -855,25 +735,18 @@
 			"name": "Get Review",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhNThjOTcxLWFiYTQtNGY2Zi05OTQxLWJlMzhhYmJmY2EwZCIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJpYXQiOjE3NjE3Njk2MDEsImV4cCI6MTc2MTc3MzIwMX0.2LGJdu8oWBewdqS0WavbWvYOSabeaZHYVn0RoLbfB-M",
-							"type": "string"
-						}
-					]
+					"type": "noauth"
 				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/reviews/d5e5ebba-5f29-4ba2-8ce8-73403d367207",
+					"raw": "{{base_url}}/reviews/{{review_id}}",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"reviews",
-						"d5e5ebba-5f29-4ba2-8ce8-73403d367207"
+						"{{review_id}}"
 					]
 				}
 			},
@@ -883,17 +756,16 @@
 			"name": "Update Review",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhNThjOTcxLWFiYTQtNGY2Zi05OTQxLWJlMzhhYmJmY2EwZCIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJpYXQiOjE3NjE3Njk2MDEsImV4cCI6MTc2MTc3MzIwMX0.2LGJdu8oWBewdqS0WavbWvYOSabeaZHYVn0RoLbfB-M",
-							"type": "string"
-						}
-					]
+					"type": "noauth"
 				},
 				"method": "PATCH",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user_token}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n    \"name\": \"Nuevo nombre para mi review\",\n    \"rating\": 1\n}",
@@ -904,13 +776,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{base_url}}/reviews/d5e5ebba-5f29-4ba2-8ce8-73403d367207",
+					"raw": "{{base_url}}/reviews/{{review_id}}",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"reviews",
-						"d5e5ebba-5f29-4ba2-8ce8-73403d367207"
+						"{{review_id}}"
 					]
 				}
 			},
@@ -940,45 +812,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{base_url}}/reviews/d5e5ebba-5f29-4ba2-8ce8-73403d367207",
+					"raw": "{{base_url}}/reviews/{{review_id}}",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"reviews",
-						"d5e5ebba-5f29-4ba2-8ce8-73403d367207"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete Review",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhNThjOTcxLWFiYTQtNGY2Zi05OTQxLWJlMzhhYmJmY2EwZCIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJpYXQiOjE3NjE3Njk2MDEsImV4cCI6MTc2MTc3MzIwMX0.2LGJdu8oWBewdqS0WavbWvYOSabeaZHYVn0RoLbfB-M",
-							"type": "string"
-						}
-					]
-				},
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "{{base_url}}/reviews/d5e5ebba-5f29-4ba2-8ce8-73403d367207",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"reviews",
-						"d5e5ebba-5f29-4ba2-8ce8-73403d367207"
+						"{{review_id}}"
 					]
 				}
 			},
@@ -1003,13 +843,197 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "{{base_url}}/reviews/d5e5ebba-5f29-4ba2-8ce8-73403d367207",
+					"raw": "{{base_url}}/reviews/{{review_id}}",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"reviews",
-						"d5e5ebba-5f29-4ba2-8ce8-73403d367207"
+						"{{review_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Review",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{base_url}}/reviews/{{review_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"reviews",
+						"{{review_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Movie",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"description\": \"Updated description\",\r\n  \"releaseDate\": \"2011-01-01\",\r\n  \"genre\": \"thriller\"\r\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/movies/{{movie_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"movies",
+						"{{movie_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Movie by Alternative User",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{alt_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"description\": \"Updated description\",\r\n  \"releaseDate\": \"2011-01-01\",\r\n  \"genre\": \"thriller\"\r\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/movies/{{movie_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"movies",
+						"{{movie_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change Role User to Admin",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"roles\": [\"admin\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/users/{{user_id}}/roles",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users",
+						"{{user_id}}",
+						"roles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/users/{{user_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users",
+						"{{user_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User by Alternative",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{alt_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/users/{{user_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users",
+						"{{user_id}}"
 					]
 				}
 			},
