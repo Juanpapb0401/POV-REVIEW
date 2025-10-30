@@ -21,7 +21,7 @@ export class UsersController {
   @Post()
   @ApiOperation({ summary: 'Register a user' })
   @ApiResponse({ status: 201, description: 'User created', type: User })
-  @ApiResponse({ status: 400, description: 'Bad Request'})
+  @ApiResponse({ status: 400, description: 'Bad Request' })
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
@@ -33,17 +33,17 @@ export class UsersController {
   @ApiQuery({ name: 'limit', required: false, description: 'Items per page' })
   @ApiQuery({ name: 'offset', required: false, description: 'Offset for pagination' })
   @ApiResponse({ status: 200, description: 'Array of users', type: [User] })
-  @ApiResponse({ status: 400, description: 'Bad Request'})
+  @ApiResponse({ status: 400, description: 'Bad Request' })
   findAll(@Query() paginationDto: PaginationDto) {
     return this.usersService.findAll(paginationDto);
   }
 
   @Get('profile')
-  @Auth() 
+  @Auth()
   @ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Get current user profile' })
   @ApiResponse({ status: 200, description: 'User profile', type: User })
-  @ApiResponse({ status: 400, description: 'Bad Request'})
+  @ApiResponse({ status: 400, description: 'Bad Request' })
   userProfile(@GetUser() user: User) {
     return this.usersService.userProfile(user.id);
   }
@@ -51,10 +51,10 @@ export class UsersController {
   @Get(':term')
   @Auth()
   @ApiBearerAuth('JWT-auth')
-  @ApiOperation({ summary: 'Find a user by id or email' }) //ASK: este cual con que consulta, si con el id o con el email?
+  @ApiOperation({ summary: 'Find a user by email' }) //ASK: este cual con que consulta, si con el id o con el email?
   @ApiParam({ name: 'term', description: 'User id (uuid) or email' })
   @ApiResponse({ status: 200, description: 'User with reviews', type: User })
-  @ApiResponse({ status: 400, description: 'Bad Request'})
+  @ApiResponse({ status: 400, description: 'Bad Request' })
   findOne(@Param('term') term: string) {
     return this.usersService.findOneWithReviews(term);
   }
@@ -65,7 +65,7 @@ export class UsersController {
   @ApiOperation({ summary: 'Update a user' })
   @ApiParam({ name: 'id', description: 'User id (uuid)' })
   @ApiResponse({ status: 200, description: 'User updated', type: User })
-  @ApiResponse({ status: 400, description: 'Bad Request'})
+  @ApiResponse({ status: 400, description: 'Bad Request' })
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
   }
@@ -76,7 +76,7 @@ export class UsersController {
   @ApiOperation({ summary: 'Delete a user' })
   @ApiParam({ name: 'id', description: 'User id (uuid)' })
   @ApiResponse({ status: 200, description: 'User deleted' })
-  @ApiResponse({ status: 400, description: 'Bad Request'})
+  @ApiResponse({ status: 400, description: 'Bad Request' })
   remove(@Param('id') id: string) {
     return this.usersService.remove(id);
   }
@@ -89,7 +89,7 @@ export class UsersController {
   @ApiOperation({ summary: 'Update user roles (admin only)' })
   @ApiParam({ name: 'id', description: 'User id (uuid)' })
   @ApiResponse({ status: 200, description: 'User roles updated', type: User })
-  @ApiResponse({ status: 400, description: 'Bad Request'})
+  @ApiResponse({ status: 400, description: 'Bad Request' })
   updateUserRoles(
     @Param('id') userId: string,
     @Body() updateUserRolesDto: UpdateUserRolesDto
