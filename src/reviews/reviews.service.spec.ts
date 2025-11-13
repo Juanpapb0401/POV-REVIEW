@@ -176,22 +176,35 @@ describe('ReviewsService', () => {
     it('should remove own review', async () => {
       const id = '2d931510-d99f-494a-8c67-87feb05e1594';
       const review = { id, user: { id: user.id } } as any;
+      const userWithRoles = { ...user, roles: ['user'] };
       reviewRepo.findOne.mockResolvedValue(review);
       reviewRepo.remove.mockResolvedValue(review);
-      const result = await service.remove(id, user);
+      const result = await service.remove(id, userWithRoles);
       expect(result).toEqual({ message: 'Review deleted successfully' });
     });
 
-    it('should reject deleting others reviews', async () => {
+    it('should allow admin to delete any review', async () => {
       const id = '2d931510-d99f-494a-8c67-87feb05e1594';
+      const review = { id, user: { id: 'other-user' } } as any;
+      const adminUser = { ...user, id: 'admin-id', roles: ['admin'] };
+      reviewRepo.findOne.mockResolvedValue(review);
+      reviewRepo.remove.mockResolvedValue(review);
+      const result = await service.remove(id, adminUser);
+      expect(result).toEqual({ message: 'Review deleted successfully' });
+    });
+
+    it('should reject non-admin deleting others reviews', async () => {
+      const id = '2d931510-d99f-494a-8c67-87feb05e1594';
+      const userWithRoles = { ...user, roles: ['user'] };
       reviewRepo.findOne.mockResolvedValue({ id, user: { id: 'other' } } as any);
-      await expect(service.remove(id, user)).rejects.toBeInstanceOf(BadRequestException);
+      await expect(service.remove(id, userWithRoles)).rejects.toBeInstanceOf(BadRequestException);
     });
 
     it('should throw NotFoundException when review not found', async () => {
       const id = '2d931510-d99f-494a-8c67-87feb05e1594';
+      const userWithRoles = { ...user, roles: ['user'] };
       reviewRepo.findOne.mockResolvedValue(null as any);
-      await expect(service.remove(id, user)).rejects.toBeInstanceOf(NotFoundException);
+      await expect(service.remove(id, userWithRoles)).rejects.toBeInstanceOf(NotFoundException);
     });
   });
 
