@@ -17,7 +17,7 @@ export class ReviewsService {
     private readonly reviewRepository: Repository<Review>,
     @InjectRepository(Movie)
     private readonly movieRepository: Repository<Movie>,
-  ) {}
+  ) { }
 
   async create(createReviewDto: CreateReviewDto, user: User) {
     try {
@@ -132,7 +132,11 @@ export class ReviewsService {
       throw new NotFoundException(`Review with ID ${id} not found`);
     }
 
-    if (review.user.id !== user.id) {
+    // Permitir eliminación si es el dueño O si es admin
+    const isAdmin = user.roles.includes('admin');
+    const isOwner = review.user.id === user.id;
+
+    if (!isOwner && !isAdmin) {
       throw new BadRequestException('You can only delete your own reviews');
     }
 
